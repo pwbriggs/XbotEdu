@@ -21,6 +21,6 @@ public class OperatorCommandMap {
             SetRobotHeadingCommand resetHeading)
     {
         resetHeading.setHeadingToApply(90);
-        operatorInterface.gamepad.getifAvailable(1).whenActive(resetHeading);
+        operatorInterface.gamepad.getifAvailable(1).whileTrue(resetHeading);
     }
 }

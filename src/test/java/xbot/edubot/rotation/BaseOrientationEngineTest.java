@@ -7,9 +7,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import competition.subsystems.drive.BaseDriveTest;
-import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import xbot.common.command.BaseCommand;
-import xbot.edubot.engines.RotationEngine;
+import competition.simulation.RotationEngine;
 
 public class BaseOrientationEngineTest extends BaseDriveTest {
 
@@ -119,10 +118,10 @@ public class BaseOrientationEngineTest extends BaseDriveTest {
     private double getRotationPower() {
         // read from drive wheels, make a turning function
         // left pair
-        double l1 = drive.frontLeft.getMotorOutputPercent();
+        double l1 = drive.frontLeft.get();
 
         // right pair
-        double r1 = drive.frontRight.getMotorOutputPercent();
+        double r1 = drive.frontRight.get();
 
         // left turns are positive. So right power is positive, left power negative.
         return (r1 - l1) / 2;

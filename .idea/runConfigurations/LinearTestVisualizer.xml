@@ -5,7 +5,7 @@
     <option name="WORKING_DIRECTORY" value="$ProjectFileDir$/build/jni/release" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="xbot.edubot.linear.*" />
+        <option name="PATTERN" value="competition.simulation.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

@@ -5,35 +5,35 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
+import edu.wpi.first.math.geometry.Translation2d;
+import xbot.common.advantage.AKitLogger;
+import xbot.common.advantage.DataFrameRefreshable;
+import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.actuators.XCANTalon.XCANTalonFactory;
 import xbot.common.injection.electrical_contract.CANTalonInfo;
+import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 
 @Singleton
-public class DriveSubsystem extends BaseDriveSubsystem {
+public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefreshable {
 
-    public final XCANTalon frontLeft;
-    public final XCANTalon frontRight;
-
-    private final double simulatedEncoderFactor = 256.0 * 39.3701; //256 "ticks" per meter, and ~39 inches in a meter
+    public final XCANSparkMax frontLeft;
+    public final XCANSparkMax frontRight;
 
     @Inject
-    public DriveSubsystem(XCANTalonFactory talonFactory, ElectricalContract electricalContract) {
+    public DriveSubsystem(XCANSparkMax.XCANSparkMaxFactory sparkMaxFactory, ElectricalContract electricalContract) {
         log.info("Creating DriveSubsystem");
         // instantiate speed controllers and sensors here, save them as class members
 
-        this.frontLeft = talonFactory
-                .create(new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, false, simulatedEncoderFactor));
-        this.frontRight = talonFactory
-                .create(new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, false, simulatedEncoderFactor));
-
-        frontLeft.createTelemetryProperties(this.getPrefix(), "frontLeft");
-        frontRight.createTelemetryProperties(this.getPrefix(), "frontRight");
-
-        this.register();
+        this.frontLeft = sparkMaxFactory
+                .create(new DeviceInfo("FrontLeft", 1, false), this.getPrefix(), "FrontLeft");
+        this.frontRight = sparkMaxFactory
+                .create(new DeviceInfo("FrontRight", 2, false), this.getPrefix(), "FrontRight");
+        frontLeft.setCheckForSuspiciousSensorValues(false);
+        frontRight.setCheckForSuspiciousSensorValues(false);
     }
 
     public void tankDrive(double leftPower, double rightPower) {
@@ -42,16 +42,9 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // an example, here is some code that has the frontLeft motor to spin according
         // to
         // the value of leftPower:
-        frontLeft.simpleSet(leftPower);
+        frontLeft.set(leftPower);
+        frontRight.set(rightPower);
     }
-    
-    @Override
-    public void periodic() {
-        super.periodic();
-        frontLeft.updateTelemetryProperties();
-        frontRight.updateTelemetryProperties();
-    }
-
     @Override
     public PIDManager getPositionalPid() {
         // TODO: Auto-generated method stub
@@ -91,5 +84,14 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public double getTransverseDistance() {
         // TODO: Auto-generated method stub
         return 0;
+    }
+
+    public void periodic() {
+        aKitLog.setLogLevel(AKitLogger.LogLevel.DEBUG);
+    }
+
+    public void refreshDataFrame() {
+        frontLeft.refreshDataFrame();
+        frontRight.refreshDataFrame();
     }
 }

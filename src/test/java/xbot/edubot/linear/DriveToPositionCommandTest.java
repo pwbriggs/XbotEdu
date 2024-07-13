@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import competition.simulation.LinearEngine;
 import org.junit.Test;
 
 import competition.subsystems.drive.BaseDriveTest;
@@ -158,7 +159,7 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
     }
     
     double getForwardPower() {
-        return drive.frontLeft.getMotorOutputPercent();
+        return drive.frontLeft.get();
     }
 
 }

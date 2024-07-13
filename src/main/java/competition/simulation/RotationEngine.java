@@ -1,8 +1,8 @@
-package xbot.edubot.engines;
+package competition.simulation;
 
 public class RotationEngine {
 
-    private double timeStep = 0.1;
+    private double timeStep = 0.02;
     private double currentHeading = 0;
     private double currentVelocity = 0;
     
@@ -31,7 +31,7 @@ public class RotationEngine {
         currentVelocity += timeStep * ((power*topSpeed) - currentVelocity) / smoothing;
         
         // Apply drag to velocity
-        // optional step, maybe?
+        currentVelocity *= 0.95;
         
         // Use velocity to update orientation
         currentHeading += currentVelocity;
