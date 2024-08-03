@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import competition.simulation.LinearEngine;
+import competition.subsystems.drive.DriveSubsystem;
 import org.junit.Test;
 
 import competition.subsystems.drive.BaseDriveTest;
@@ -20,6 +21,7 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
     protected double periodMultiplier = 1;
     LinearEngine engine;
     DriveToPositionCommand command;
+    DriveSubsystem drive;
     private int loops;
     
     public static interface AsyncLinearIntervalJob {
@@ -56,6 +58,8 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
     public void vizRun() {
         command = this.getInjectorComponent().driveToPositionCommand();
         command.setTargetPosition(target_distance);
+
+        drive = (DriveSubsystem)this.getInjectorComponent().driveSubsystem();
                 
         command.initialize();
         engine = new LinearEngine();
@@ -71,6 +75,8 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
                 public void run() {
                     command.execute();
                     engine.step(getForwardPower());
+
+                    drive.refreshDataFrame();
                     loops++;
                     setPosition(engine.getDistance());
                     
