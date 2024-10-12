@@ -20,14 +20,14 @@ public class BaseDriveTest extends BaseCompetitionTest {
 
     MockXboxControllerAdapter gamepad;
 
-    @Before
-    public void setUp() {
-        super.setUp();
-        drive = (DriveSubsystem)this.getInjectorComponent().driveSubsystem();
-        oi = this.getInjectorComponent().operatorInterface();
-        pose = (PoseSubsystem)this.getInjectorComponent().poseSubsystem();
-        gamepad = (MockXboxControllerAdapter) oi.gamepad;
-    }
+        @Before
+        public void setUp() {
+            super.setUp();
+            drive = (DriveSubsystem)this.getInjectorComponent().driveSubsystem();
+            oi = this.getInjectorComponent().operatorInterface();
+            pose = (PoseSubsystem)this.getInjectorComponent().poseSubsystem();
+            gamepad = (MockXboxControllerAdapter) oi.gamepad;
+        }
 
     public void assertDrive(double left, double right) {
         assertDrive(left, right, "");

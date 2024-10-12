@@ -37,6 +37,8 @@ public class DriveToPositionCommand extends BaseCommand {
 
         // How you do this is up to you. If you get stuck, ask a mentor or student for
         // some hints!
+        drive.tankDrive(0.25,0.25);
+        pose.getPosition();
     }
 
     @Override

@@ -15,6 +15,8 @@ import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
+import xbot.common.properties.DoubleProperty;
+import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 
 @Singleton
@@ -23,8 +25,10 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
     public final XCANSparkMax frontLeft;
     public final XCANSparkMax frontRight;
 
+    DoubleProperty dp;
+
     @Inject
-    public DriveSubsystem(XCANSparkMax.XCANSparkMaxFactory sparkMaxFactory, ElectricalContract electricalContract) {
+    public DriveSubsystem(XCANSparkMax.XCANSparkMaxFactory sparkMaxFactory, ElectricalContract electricalContract, PropertyFactory pf) {
         log.info("Creating DriveSubsystem");
         // instantiate speed controllers and sensors here, save them as class members
 
@@ -34,6 +38,9 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
                 .create(new DeviceInfo("FrontRight", 2, false), this.getPrefix(), "FrontRight");
         frontLeft.setCheckForSuspiciousSensorValues(false);
         frontRight.setCheckForSuspiciousSensorValues(false);
+
+        pf.setPrefix(this);
+        dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
     }
 
     public void tankDrive(double leftPower, double rightPower) {
