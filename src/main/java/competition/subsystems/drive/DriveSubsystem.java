@@ -45,13 +45,17 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
 
     public void tankDrive(double leftPower, double rightPower) {
         // You'll need to take these power values and assign them to all of the motors.
-        // As
-        // an example, here is some code that has the frontLeft motor to spin according
-        // to
-        // the value of leftPower:
+        // As an example, here is some code that has the frontLeft motor to spin
+        // according to the value of leftPower:
         frontLeft.set(leftPower);
+        // TODO: Add code to set the right motors to the rightPower value.
 
     }
+
+
+    // You can ignore all of the code undearneat this comment -->
+    // You won't have to touch it.
+
     @Override
     public PIDManager getPositionalPid() {
         // TODO: Auto-generated method stub
