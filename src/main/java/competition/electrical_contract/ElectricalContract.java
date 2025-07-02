@@ -1,8 +1,8 @@
 package competition.electrical_contract;
 
-import xbot.common.injection.electrical_contract.CANTalonInfo;
+import xbot.common.injection.electrical_contract.CANMotorControllerInfo;
 
 public abstract class ElectricalContract {
-    public abstract CANTalonInfo getLeftLeader();
-    public abstract CANTalonInfo getRightLeader();
+    public abstract CANMotorControllerInfo getLeftLeader();
+    public abstract CANMotorControllerInfo getRightLeader();
 }

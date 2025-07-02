@@ -1,6 +1,7 @@
 package competition.simulation;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import xbot.common.math.MathUtils;
 
@@ -17,8 +18,9 @@ public class SimSwerveModule {
     private double drivePositionRad = 0.0;
 
     public SimSwerveModule() {
-        driveMotor = new FlywheelSim(DCMotor.getNEO(1), 6.75, 0.025);
-        steeringMotor = new FlywheelSim(DCMotor.getNEO(1), 150.0 / 7.0, 0.004);
+        var motor = DCMotor.getNEO(1);
+        driveMotor = new FlywheelSim(LinearSystemId.createFlywheelSystem(motor, 1, 6.75), motor, 0.025);
+        steeringMotor = new FlywheelSim(LinearSystemId.createFlywheelSystem(motor, 1, 150.0 / 7.0), motor, 0.004);
     }
 
     public void setDrivePower(double power) {

@@ -4,17 +4,18 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import competition.subsystems.drive.DriveSubsystem;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import xbot.common.controls.sensors.XGyro.XGyroFactory;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
+
+import static edu.wpi.first.units.Units.Rotations;
 
 @Singleton
 public class PoseSubsystem extends BasePoseSubsystem {
 
     private final DriveSubsystem drive;
 
-    public double scalingFactorFromTicksToInches = 1.0;
+    public double scalingFactorFromRotationsToMeters = 0.5;
     
     @Inject
     public PoseSubsystem(XGyroFactory gyroFactory, PropertyFactory propManager, DriveSubsystem drive) {
@@ -28,12 +29,12 @@ public class PoseSubsystem extends BasePoseSubsystem {
 
     @Override
     protected double getLeftDriveDistance() {
-        return drive.frontLeft.getPosition() * scalingFactorFromTicksToInches;
+        return drive.frontLeft.getPosition().in(Rotations) * scalingFactorFromRotationsToMeters;
     }
 
     @Override
     protected double getRightDriveDistance() {
-        return drive.frontRight.getPosition() * scalingFactorFromTicksToInches;
+        return drive.frontRight.getPosition().in(Rotations) * scalingFactorFromRotationsToMeters;
     }
 
     @Override

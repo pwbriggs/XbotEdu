@@ -10,26 +10,34 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import xbot.common.advantage.DataFrameRefreshable;
 import xbot.common.command.BaseSubsystem;
-import xbot.common.controls.actuators.XCANSparkMax;
+import xbot.common.controls.actuators.XCANMotorController;
+import xbot.common.injection.electrical_contract.CANMotorControllerInfo;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.Rotation;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 @Singleton
 public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefreshable {
 
-    public XCANSparkMax frontLeftDrive;
-    public XCANSparkMax frontRightDrive;
-    public XCANSparkMax rearLeftDrive;
-    public XCANSparkMax rearRightDrive;
+    public XCANMotorController frontLeftDrive;
+    public XCANMotorController frontRightDrive;
+    public XCANMotorController rearLeftDrive;
+    public XCANMotorController rearRightDrive;
 
-    public XCANSparkMax frontLeftSteering;
-    public XCANSparkMax frontRightSteering;
-    public XCANSparkMax rearLeftSteering;
-    public XCANSparkMax rearRightSteering;
+    public XCANMotorController frontLeftSteering;
+    public XCANMotorController frontRightSteering;
+    public XCANMotorController rearLeftSteering;
+    public XCANMotorController rearRightSteering;
 
     SwerveDriveKinematics kinematics;
+    public static double metersPerRotation = 0.5;
     public static double maxVelocityMetersPerSecond = 3;
     SwerveDrivePoseEstimator swerveDrivePoseEstimator;
 
@@ -37,16 +45,21 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
     Pose2d swerveDrivePose = new Pose2d();
 
     @Inject
-    public SwerveDriveSubsystem(XCANSparkMax.XCANSparkMaxFactory sparkMaxFactory) {
-        frontLeftDrive = sparkMaxFactory.create(new DeviceInfo("FrontLeftDrive", 11, false), this.getPrefix(), "FrontLeftDrive");
-        frontRightDrive = sparkMaxFactory.create(new DeviceInfo("FrontRightDrive", 22, false), this.getPrefix(), "FrontRightDrive");
-        rearLeftDrive = sparkMaxFactory.create(new DeviceInfo("RearLeftDrive", 3, false), this.getPrefix(), "RearLeftDrive");
-        rearRightDrive = sparkMaxFactory.create(new DeviceInfo("RearRightDrive", 4, false), this.getPrefix(), "RearRightDrive");
+    public SwerveDriveSubsystem(XCANMotorController.XCANMotorControllerFactory motorControllerFactory) {
+        frontLeftDrive = motorControllerFactory.create(new CANMotorControllerInfo("FrontLeftDrive", 11), this.getPrefix(), "FrontLeftDrive");
+        frontRightDrive = motorControllerFactory.create(new CANMotorControllerInfo("FrontRightDrive", 22), this.getPrefix(), "FrontRightDrive");
+        rearLeftDrive = motorControllerFactory.create(new CANMotorControllerInfo("RearLeftDrive", 3), this.getPrefix(), "RearLeftDrive");
+        rearRightDrive = motorControllerFactory.create(new CANMotorControllerInfo("RearRightDrive", 4), this.getPrefix(), "RearRightDrive");
 
-        frontLeftSteering = sparkMaxFactory.create(new DeviceInfo("FrontLeftSteering", 5, false), this.getPrefix(), "FrontLeftSteering");
-        frontRightSteering = sparkMaxFactory.create(new DeviceInfo("FrontRightSteering", 6, false), this.getPrefix(), "FrontRightSteering");
-        rearLeftSteering = sparkMaxFactory.create(new DeviceInfo("RearLeftSteering", 7, false), this.getPrefix(), "RearLeftSteering");
-        rearRightSteering = sparkMaxFactory.create(new DeviceInfo("RearRightSteering", 8, false), this.getPrefix(), "RearRightSteering");
+        frontLeftDrive.setDistancePerMotorRotationsScaleFactor(Meters.per(Rotation).of(metersPerRotation));
+        frontRightDrive.setDistancePerMotorRotationsScaleFactor(Meters.per(Rotation).of(metersPerRotation));
+        rearLeftDrive.setDistancePerMotorRotationsScaleFactor(Meters.per(Rotation).of(metersPerRotation));
+        rearRightDrive.setDistancePerMotorRotationsScaleFactor(Meters.per(Rotation).of(metersPerRotation));
+
+        frontLeftSteering = motorControllerFactory.create(new CANMotorControllerInfo("FrontLeftSteering", 5), this.getPrefix(), "FrontLeftSteering");
+        frontRightSteering = motorControllerFactory.create(new CANMotorControllerInfo("FrontRightSteering", 6), this.getPrefix(), "FrontRightSteering");
+        rearLeftSteering = motorControllerFactory.create(new CANMotorControllerInfo("RearLeftSteering", 7), this.getPrefix(), "RearLeftSteering");
+        rearRightSteering = motorControllerFactory.create(new CANMotorControllerInfo("RearRightSteering", 8), this.getPrefix(), "RearRightSteering");
 
         kinematics = new SwerveDriveKinematics(
                 new Translation2d(0.5, 0.5),
@@ -96,17 +109,17 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
 
     public SwerveModulePosition[] getSwerveModulePositions() {
         return new SwerveModulePosition[]{
-                new SwerveModulePosition(frontLeftDrive.getPosition(), Rotation2d.fromRadians(frontLeftSteering.getPosition())),
-                new SwerveModulePosition(frontRightDrive.getPosition(), Rotation2d.fromRadians(frontRightSteering.getPosition())),
-                new SwerveModulePosition(rearLeftDrive.getPosition(), Rotation2d.fromRadians(rearLeftSteering.getPosition())),
-                new SwerveModulePosition(rearRightDrive.getPosition(), Rotation2d.fromRadians(rearRightSteering.getPosition()))
+                new SwerveModulePosition(frontLeftDrive.getPositionAsDistance(), new Rotation2d(frontLeftSteering.getPosition())),
+                new SwerveModulePosition(frontRightDrive.getPositionAsDistance(), new Rotation2d(frontRightSteering.getPosition())),
+                new SwerveModulePosition(rearLeftDrive.getPositionAsDistance(), new Rotation2d(rearLeftSteering.getPosition())),
+                new SwerveModulePosition(rearRightDrive.getPositionAsDistance(), new Rotation2d(rearRightSteering.getPosition()))
         };
     }
 
-    public SwerveModuleState buildSwerveModuleStateFromMotors(XCANSparkMax driveMotor, XCANSparkMax steeringMotor) {
+    public SwerveModuleState buildSwerveModuleStateFromMotors(XCANMotorController driveMotor, XCANMotorController steeringMotor) {
         return new SwerveModuleState(
-                driveMotor.getVelocity(),
-                Rotation2d.fromRadians(steeringMotor.getPosition())
+                driveMotor.getVelocity().in(RotationsPerSecond) * metersPerRotation,
+                Rotation2d.fromRadians(steeringMotor.getPosition().in(Radians))
         );
     }
 

@@ -1,5 +1,6 @@
 package competition.subsystems.drive;
 
+import static edu.wpi.first.units.Units.Rotations;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -9,8 +10,7 @@ import competition.BaseCompetitionTest;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj.MockXboxControllerAdapter;
-import xbot.common.controls.actuators.mock_adapters.MockCANSparkMax;
-import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
+import xbot.common.controls.actuators.mock_adapters.MockCANMotorController;
 
 public class BaseDriveTest extends BaseCompetitionTest {
 
@@ -34,34 +34,34 @@ public class BaseDriveTest extends BaseCompetitionTest {
     }
 
     public void assertDrive(double left, double right, String message) {
-        assertEquals(message, left, drive.frontLeft.get(), 0.001);
+        assertEquals(message, left, drive.frontLeft.getPower(), 0.001);
 
-        assertEquals(message, right, drive.frontRight.get(), 0.001);
+        assertEquals(message, right, drive.frontRight.getPower(), 0.001);
     }
 
     public void assertTurningLeft() {
         // left < right
-        assertTrue(drive.frontLeft.get() < drive.frontRight.get());
+        assertTrue(drive.frontLeft.getPower() < drive.frontRight.getPower());
     }
 
     public void assertTurningRight() {
         // right < left
-        assertTrue(drive.frontLeft.get() > drive.frontRight.get());
+        assertTrue(drive.frontLeft.getPower() > drive.frontRight.getPower());
     }
 
     public void assertGoingForward() {
         // right + left > 0
-        assertTrue((drive.frontLeft.get() + drive.frontRight.get()) > 0);
+        assertTrue((drive.frontLeft.getPower() + drive.frontRight.getPower()) > 0);
     }
 
     public void assertGoingBackward() {
         // right + left > 0
-        assertTrue((drive.frontLeft.get() + drive.frontRight.get()) < 0);
+        assertTrue((drive.frontLeft.getPower() + drive.frontRight.getPower()) < 0);
     }
 
     public void setPosition(double position) {
-        ((MockCANSparkMax)drive.frontRight).setPosition(position / pose.scalingFactorFromTicksToInches);
-        ((MockCANSparkMax)drive.frontLeft).setPosition(position / pose.scalingFactorFromTicksToInches);
+        ((MockCANMotorController)drive.frontRight).setPosition(Rotations.of(position / pose.scalingFactorFromRotationsToMeters));
+        ((MockCANMotorController)drive.frontLeft).setPosition(Rotations.of(position / pose.scalingFactorFromRotationsToMeters));
     } 
 
 }

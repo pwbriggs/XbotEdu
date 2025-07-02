@@ -165,7 +165,7 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
     }
     
     double getForwardPower() {
-        return drive.frontLeft.get();
+        return drive.frontLeft.getPower();
     }
 
 }

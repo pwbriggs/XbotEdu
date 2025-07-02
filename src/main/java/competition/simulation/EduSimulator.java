@@ -5,9 +5,14 @@ import competition.subsystems.drive.SwerveDriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.MockDigitalInput;
-import xbot.common.controls.actuators.mock_adapters.MockCANSparkMax;
+import xbot.common.controls.actuators.mock_adapters.MockCANMotorController;
 
 import javax.inject.Inject;
+
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.Rotations;
 
 public class EduSimulator {
 
@@ -62,16 +67,16 @@ public class EduSimulator {
     }
 
     private double getForwardPower() {
-        return (drive.frontLeft.get() + drive.frontRight.get())  / 2.0;
+        return (drive.frontLeft.getPower() + drive.frontRight.getPower())  / 2.0;
     }
 
     private double getRotationalPower() {
-        return (drive.frontRight.get() - drive.frontLeft.get()) / 2.0;
+        return (drive.frontRight.getPower() - drive.frontLeft.getPower()) / 2.0;
     }
 
     private void addDistanceToEncoders(double distance) {
-        ((MockCANSparkMax)drive.frontLeft).setPosition(distance);
-        ((MockCANSparkMax)drive.frontRight).setPosition(distance);
+        ((MockCANMotorController)drive.frontLeft).setPosition(Rotations.of(distance));
+        ((MockCANMotorController)drive.frontRight).setPosition(Rotations.of(distance));
     }
 
 
@@ -85,15 +90,15 @@ public class EduSimulator {
         rearRightSimModule.update();
 
         // Set new inputs to the simulated motors for next loop
-        frontLeftSimModule.setDrivePower(swerve.frontLeftDrive.get());
-        frontRightSimModule.setDrivePower(swerve.frontRightDrive.get());
-        rearLeftSimModule.setDrivePower(swerve.rearLeftDrive.get());
-        rearRightSimModule.setDrivePower(swerve.rearRightDrive.get());
+        frontLeftSimModule.setDrivePower(swerve.frontLeftDrive.getPower());
+        frontRightSimModule.setDrivePower(swerve.frontRightDrive.getPower());
+        rearLeftSimModule.setDrivePower(swerve.rearLeftDrive.getPower());
+        rearRightSimModule.setDrivePower(swerve.rearRightDrive.getPower());
 
-        frontLeftSimModule.setSteeringPower(swerve.frontLeftSteering.get());
-        frontRightSimModule.setSteeringPower(swerve.frontRightSteering.get());
-        rearLeftSimModule.setSteeringPower(swerve.rearLeftSteering.get());
-        rearRightSimModule.setSteeringPower(swerve.rearRightSteering.get());
+        frontLeftSimModule.setSteeringPower(swerve.frontLeftSteering.getPower());
+        frontRightSimModule.setSteeringPower(swerve.frontRightSteering.getPower());
+        rearLeftSimModule.setSteeringPower(swerve.rearLeftSteering.getPower());
+        rearRightSimModule.setSteeringPower(swerve.rearRightSteering.getPower());
 
         // If the robot is disabled, the real robot would have all its outputs locked out by firmware.
         // We emulate this by setting the simulated motor outputs to 0.
@@ -115,21 +120,21 @@ public class EduSimulator {
         double radiansPerMeter = 30;
 
         // Read outputs from the simulated motors
-        ((MockCANSparkMax)swerve.frontLeftDrive).setVelocity(frontLeftSimModule.getDriveVelocityRad() / radiansPerMeter);
-        ((MockCANSparkMax)swerve.frontRightDrive).setVelocity(frontRightSimModule.getDriveVelocityRad() / radiansPerMeter);
-        ((MockCANSparkMax)swerve.rearLeftDrive).setVelocity(rearLeftSimModule.getDriveVelocityRad() / radiansPerMeter);
-        ((MockCANSparkMax)swerve.rearRightDrive).setVelocity(rearRightSimModule.getDriveVelocityRad() / radiansPerMeter);
+        ((MockCANMotorController)swerve.frontLeftDrive).setVelocity(RadiansPerSecond.of(frontLeftSimModule.getDriveVelocityRad() / radiansPerMeter));
+        ((MockCANMotorController)swerve.frontRightDrive).setVelocity(RadiansPerSecond.of(frontRightSimModule.getDriveVelocityRad() / radiansPerMeter));
+        ((MockCANMotorController)swerve.rearLeftDrive).setVelocity(RadiansPerSecond.of(rearLeftSimModule.getDriveVelocityRad() / radiansPerMeter));
+        ((MockCANMotorController)swerve.rearRightDrive).setVelocity(RadiansPerSecond.of(rearRightSimModule.getDriveVelocityRad() / radiansPerMeter));
 
-        ((MockCANSparkMax)swerve.frontLeftDrive).setPosition(frontLeftSimModule.getDrivePositionRad() / radiansPerMeter);
-        ((MockCANSparkMax)swerve.frontRightDrive).setPosition(frontRightSimModule.getDrivePositionRad() / radiansPerMeter);
-        ((MockCANSparkMax)swerve.rearLeftDrive).setPosition(rearLeftSimModule.getDrivePositionRad() / radiansPerMeter);
-        ((MockCANSparkMax)swerve.rearRightDrive).setPosition(rearRightSimModule.getDrivePositionRad() / radiansPerMeter);
+        ((MockCANMotorController)swerve.frontLeftDrive).setPosition(Radians.of(frontLeftSimModule.getDrivePositionRad() / radiansPerMeter));
+        ((MockCANMotorController)swerve.frontRightDrive).setPosition(Radians.of(frontRightSimModule.getDrivePositionRad() / radiansPerMeter));
+        ((MockCANMotorController)swerve.rearLeftDrive).setPosition(Radians.of(rearLeftSimModule.getDrivePositionRad() / radiansPerMeter));
+        ((MockCANMotorController)swerve.rearRightDrive).setPosition(Radians.of(rearRightSimModule.getDrivePositionRad() / radiansPerMeter));
 
 
-        ((MockCANSparkMax)swerve.frontLeftSteering).setPosition(frontLeftSimModule.getTurnAbsolutePositionRad());
-        ((MockCANSparkMax)swerve.frontRightSteering).setPosition(frontRightSimModule.getTurnAbsolutePositionRad());
-        ((MockCANSparkMax)swerve.rearLeftSteering).setPosition(rearLeftSimModule.getTurnAbsolutePositionRad());
-        ((MockCANSparkMax)swerve.rearRightSteering).setPosition(rearRightSimModule.getTurnAbsolutePositionRad());
+        ((MockCANMotorController)swerve.frontLeftSteering).setPosition(Radians.of(frontLeftSimModule.getTurnAbsolutePositionRad()));
+        ((MockCANMotorController)swerve.frontRightSteering).setPosition(Radians.of(frontRightSimModule.getTurnAbsolutePositionRad()));
+        ((MockCANMotorController)swerve.rearLeftSteering).setPosition(Radians.of(rearLeftSimModule.getTurnAbsolutePositionRad()));
+        ((MockCANMotorController)swerve.rearRightSteering).setPosition(Radians.of(rearRightSimModule.getTurnAbsolutePositionRad()));
     }
 
 }

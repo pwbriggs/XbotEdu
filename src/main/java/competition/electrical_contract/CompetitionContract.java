@@ -2,25 +2,23 @@ package competition.electrical_contract;
 
 import javax.inject.Inject;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
 import competition.subsystems.pose.PoseSubsystem;
-import xbot.common.injection.electrical_contract.CANTalonInfo;
+import xbot.common.injection.electrical_contract.CANBusId;
+import xbot.common.injection.electrical_contract.CANMotorControllerInfo;
+import xbot.common.injection.electrical_contract.MotorControllerType;
 
 public class CompetitionContract extends ElectricalContract {
-
-    protected final double simulationScalingValue = 256.0 * PoseSubsystem.INCHES_IN_A_METER;
-
+    
     @Inject
     public CompetitionContract() {}
 
     @Override
-    public CANTalonInfo getLeftLeader() {
-        return new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulationScalingValue);
+    public CANMotorControllerInfo getLeftLeader() {
+        return new CANMotorControllerInfo("Left", MotorControllerType.SparkMax, CANBusId.RIO, 1);
     }
 
     @Override
-    public CANTalonInfo getRightLeader() {
-        return new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulationScalingValue);
+    public CANMotorControllerInfo getRightLeader() {
+        return new CANMotorControllerInfo("Left", MotorControllerType.SparkMax, CANBusId.RIO, 2);
     }
 }

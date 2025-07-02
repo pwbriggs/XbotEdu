@@ -1,18 +1,13 @@
 package competition.subsystems.drive;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
-import edu.wpi.first.math.geometry.Translation2d;
 import xbot.common.advantage.AKitLogger;
 import xbot.common.advantage.DataFrameRefreshable;
-import xbot.common.controls.actuators.XCANSparkMax;
-import xbot.common.controls.actuators.XCANTalon;
-import xbot.common.controls.actuators.XCANTalon.XCANTalonFactory;
-import xbot.common.injection.electrical_contract.CANTalonInfo;
-import xbot.common.injection.electrical_contract.DeviceInfo;
+import xbot.common.controls.actuators.XCANMotorController;
+import xbot.common.injection.electrical_contract.CANMotorControllerInfo;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
@@ -22,22 +17,20 @@ import xbot.common.subsystems.drive.BaseDriveSubsystem;
 @Singleton
 public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefreshable {
 
-    public final XCANSparkMax frontLeft;
-    public final XCANSparkMax frontRight;
+    public final XCANMotorController frontLeft;
+    public final XCANMotorController frontRight;
 
     DoubleProperty dp;
 
     @Inject
-    public DriveSubsystem(XCANSparkMax.XCANSparkMaxFactory sparkMaxFactory, ElectricalContract electricalContract, PropertyFactory pf) {
+    public DriveSubsystem(XCANMotorController.XCANMotorControllerFactory motorControllerFactory, ElectricalContract electricalContract, PropertyFactory pf) {
         log.info("Creating DriveSubsystem");
         // instantiate speed controllers and sensors here, save them as class members
 
-        this.frontLeft = sparkMaxFactory
-                .create(new DeviceInfo("FrontLeft", 1, false), this.getPrefix(), "FrontLeft");
-        this.frontRight = sparkMaxFactory
-                .create(new DeviceInfo("FrontRight", 2, false), this.getPrefix(), "FrontRight");
-        frontLeft.setCheckForSuspiciousSensorValues(false);
-        frontRight.setCheckForSuspiciousSensorValues(false);
+        this.frontLeft = motorControllerFactory
+                .create(new CANMotorControllerInfo("FrontLeft", 1), this.getPrefix(), "FrontLeft");
+        this.frontRight = motorControllerFactory
+                .create(new CANMotorControllerInfo("FrontRight", 2), this.getPrefix(), "FrontRight");
 
         pf.setPrefix(this);
         dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
@@ -47,7 +40,7 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
         // You'll need to take these power values and assign them to all of the motors.
         // As an example, here is some code that has the frontLeft motor to spin
         // according to the value of leftPower:
-        frontLeft.set(leftPower);
+        frontLeft.setPower(leftPower);
         // TODO: Add code to set the right motors to the rightPower value.
 
     }
