@@ -1,0 +1,249 @@
+{
+  "hubs": [
+    {
+      "x": 2183,
+      "y": 122,
+      "width": 1944,
+      "height": 1056,
+      "state": {
+        "sidebar": {
+          "width": 447,
+          "expanded": [
+            "/SwerveDriveSubsystem/DrivePID",
+            "/SwerveSteeringSubsystem/SteeringPID",
+            "/AdvantageKit/RealOutputs/Simulator/FieldSimulation",
+            "/Preferences/CoralArmPivotMaintainerCommand/PositionalPID",
+            "/AdvantageKit/RealOutputs/AprilTagVisionSubsystemExtended/Cameras",
+            "/AdvantageKit/RealOutputs/AprilTagVisionSubsystemExtended/Cameras/AprilTagFrontLeft",
+            "/AdvantageKit/RealOutputs/AlignToReefWithAprilTagCommand/TargetReefFace",
+            "/AdvantageKit/RealOutputs/AlignToReefWithAprilTagCommand/ChosenTag/translation",
+            "/AdvantageKit/RealOutputs/PoseSubsystem/CameraPose",
+            "/AdvantageKit/RealOutputs/AlignToTagLocalMovement",
+            "/AdvantageKit/RealOutputs/AlignToTagGlobalMovement",
+            "/AdvantageKit/RealOutputs/AlignToTagGlobalMovement/DriveTarget",
+            "/AdvantageKit/RealOutputs/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearLeft",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearLeft",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearRight",
+            "/photonvision/Apriltag_RearLeft_Camera",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearLeft/LatestTargetObservation",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearLeft/LatestTargetObservation/cameraToTarget/translation",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearLeft/PoseObservations",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearLeft/PoseObservations/0",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearLeft/LatestTargetObservation/cameraToTarget",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearRight/LatestTargetObservation",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearRight/LatestTargetObservation/cameraToTarget",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagRearRight/LatestTargetObservation/cameraToTarget/translation",
+            "/SmartDashboard/Scheduler",
+            "/Preferences/ElevatorMaintainerCommand/trapezoidMotion",
+            "/Preferences/CoralArmMaintainerCommand/trapezoidMotion",
+            "/AdvantageKit/ElevatorMotorCANMotorController",
+            "/Preferences/SwerveDriveSubsystem/DrivePID",
+            "/AdvantageKit/ArmPivotMotorCANMotorController",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio9DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio8DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio7DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio6DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio5DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio3DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio4DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio2DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio1DigitalInput",
+            "/AdvantageKit/AlgaeArmSubsystem/Dio0DigitalInput",
+            "/AdvantageKit/AlgaeArmPivotMotor/CANMotorController",
+            "/Preferences/AlgaeArmMaintainerCommand/trapezoidMotion",
+            "/Preferences/SwerveSteeringSubsystem/SteeringPID",
+            "/AdvantageKit/ElevatorMotor/CANMotorController",
+            "/AdvantageKit/DriveSubsystem/RearRightDrive/Steering",
+            "/AdvantageKit/DriveSubsystem/RearRightDrive/SteeringEncoder",
+            "/AdvantageKit/DriveSubsystem/RearRightDrive/SteeringEncoder/CANCoder",
+            "/AdvantageKit/DriveSubsystem/RearRightDrive/SteeringEncoder/AbsoluteEncoder",
+            "/AdvantageKit/RealOutputs/SwerveSteeringSubsystem/RearRightDrive",
+            "/AdvantageKit/DriveSubsystem/RearRightDrive/Steering/CANMotorController",
+            "/AdvantageKit/ArmPivotMotor/CANMotorController",
+            "/AdvantageKit/RealOutputs/SwerveDriveWithJoysticksCommand/RawTranslationIntent",
+            "/AdvantageKit/RealOutputs/SwerveDriveWithJoysticksCommand/ScaledTranslationIntent",
+            "/AdvantageKit/AlgaeArmSubsystem/AlgaeArmBottomSensorDigitalInput",
+            "/AdvantageKit/RealOutputs/FilterSubsystem",
+            "/Preferences/FilterSubsystem",
+            "/Preferences/FilterSubsystem/ComplimentaryFilter",
+            "/RealOutputs",
+            "/RealOutputs/ElevatorSubsystem",
+            "/RealOutputs/ElevatorMaintainerCommand",
+            "/ElevatorMotorPID",
+            "/ElevatorMotor",
+            "/ElevatorMotor/CANMotorController",
+            "/AdvantageKit/RealOutputs/CalibrateDriveCommand",
+            "/AdvantageKit/RealOutputs/ElevatorMaintainerCommand",
+            "/Preferences/SwerveDriveSubsystem",
+            "/Preferences/DriveSubsystem/PositionPID",
+            "/Preferences/DriveSubsystem/HeadingPID",
+            "/AdvantageKit/RealOutputs/PoseSubsystem/RobotPose/translation",
+            "/AdvantageKit/RealOutputs/AlignCameraToAprilTagCalculator/AprilTagData",
+            "/AdvantageKit/RealOutputs/AlignCameraToAprilTagCalculator/TargetLocationOnField",
+            "/AdvantageKit/RealOutputs/AlignCameraToAprilTagCalculator/TargetLocationOnField/translation",
+            "/AdvantageKit",
+            "/AdvantageKit/RealOutputs/AprilTagVisionSubsystemExtended/Cameras/AprilTagFrontLeft/TagPoses/0/translation",
+            "/AdvantageKit/RealOutputs/AprilTagVisionSubsystemExtended/Cameras/AprilTagFrontLeft/TagPoses/0/rotation",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagFrontLeft",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagFrontLeft/TagIds",
+            "/AdvantageKit/AprilTagVisionSubsystemExtended/Cameras/AprilTagFrontLeft/LatestTargetObservation",
+            "/AdvantageKit/PoseSubsystem",
+            "/Preferences/PoseSubsystem",
+            "/AdvantageKit/RealOutputs",
+            "/AdvantageKit/RealOutputs/PoseSubsystem/CameraPose/0",
+            "/AdvantageKit/RealOutputs/PoseSubsystem/CameraPose/1",
+            "/AdvantageKit/RealOutputs/AprilTagVisionSubsystemExtended",
+            "/AdvantageKit/RealOutputs/AprilTagVisionSubsystemExtended/Cameras/AprilTagFrontLeft/TagPoses",
+            "/AdvantageKit/RealOutputs/AprilTagVisionSubsystemExtended/Cameras/AprilTagFrontRight",
+            "/AdvantageKit/RealOutputs/Simulator",
+            "/AdvantageKit/RealOutputs/PoseSubsystem"
+          ]
+        },
+        "tabs": {
+          "selected": 2,
+          "tabs": [
+            {
+              "type": 0,
+              "title": "",
+              "controller": null,
+              "controllerUUID": "oz1a35znw28xtm7shst2zd8rkn9xlbx4",
+              "renderer": "#/",
+              "controlsHeight": 0
+            },
+            {
+              "type": 2,
+              "title": "2d top view",
+              "controller": {
+                "sources": [
+                  {
+                    "type": "robot",
+                    "logKey": "NT:/AdvantageKit/RealOutputs/PoseSubsystem/Location",
+                    "logType": "Pose2d",
+                    "visible": true,
+                    "options": {}
+                  }
+                ],
+                "game": "2025 Field (Welded)",
+                "bumpers": "auto",
+                "origin": "blue",
+                "orientation": 0,
+                "size": 30
+              },
+              "controllerUUID": "icj9qq9dlv43tplcxoxfazr6gi5tdgwy",
+              "renderer": null,
+              "controlsHeight": 99
+            },
+            {
+              "type": 3,
+              "title": "3d view",
+              "controller": {
+                "sources": [
+                  {
+                    "type": "robot",
+                    "logKey": "NT:/AdvantageKit/RealOutputs/PoseSubsystem/Location",
+                    "logType": "Pose2d",
+                    "visible": true,
+                    "options": {
+                      "model": "2025 KitBot"
+                    }
+                  }
+                ],
+                "game": "2025 Field (Welded)",
+                "origin": "blue"
+              },
+              "controllerUUID": "ox2te7k1ktj76khhhqyowcgkihnqvl8g",
+              "renderer": {
+                "cameraIndex": -1,
+                "orbitFov": 50,
+                "cameraPosition": [
+                  7.5749910818581405,
+                  2.1568059323597595,
+                  -9.217981603122656
+                ],
+                "cameraTarget": [
+                  4.66037246179174,
+                  -1.205771551013326,
+                  -3.2358013142366957
+                ]
+              },
+              "controlsHeight": 239
+            },
+            {
+              "type": 5,
+              "title": "Console",
+              "controller": "NT:/AdvantageKit/RealOutputs/Console",
+              "controllerUUID": "ozof9k4e8dl2luiuh9xhhj8v9gctlo86",
+              "renderer": {
+                "highlight": false
+              },
+              "controlsHeight": 0
+            },
+            {
+              "type": 8,
+              "title": "Joysticks",
+              "controller": [
+                "Xbox Controller (White)",
+                "None",
+                "None",
+                "None",
+                "None",
+                "None"
+              ],
+              "controllerUUID": "1u4q4rm90j9iqu5413ggj7ujvehxj98t",
+              "renderer": null,
+              "controlsHeight": 85
+            },
+            {
+              "type": 9,
+              "title": "Swerve",
+              "controller": {
+                "sources": [
+                  {
+                    "type": "states",
+                    "logKey": "NT:/AdvantageKit/RealOutputs/DriveSubsystem/CurrentSwerveState",
+                    "logType": "SwerveModuleState[]",
+                    "visible": true,
+                    "options": {
+                      "color": "#ff0000",
+                      "arrangement": "0,1,2,3"
+                    }
+                  },
+                  {
+                    "type": "states",
+                    "logKey": "NT:/AdvantageKit/RealOutputs/DriveSubsystem/DesiredSwerveState",
+                    "logType": "SwerveModuleState[]",
+                    "visible": true,
+                    "options": {
+                      "color": "#0000ff",
+                      "arrangement": "0,1,2,3"
+                    }
+                  }
+                ],
+                "maxSpeed": 3.4,
+                "sizeX": 0.65,
+                "sizeY": 0.65,
+                "orientation": 1
+              },
+              "controllerUUID": "8tvgr5720hvoti5us5umldp8v3hirq1e",
+              "renderer": null,
+              "controlsHeight": 200
+            },
+            {
+              "type": 4,
+              "title": "Table",
+              "controller": [
+                "NT:/SmartDashboard/Scheduler/Names"
+              ],
+              "controllerUUID": "yzrep59pzgsyuq2yd9m13gexfoe5h440",
+              "renderer": null,
+              "controlsHeight": 0
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "satellites": [],
+  "version": "4.1.1"
+}
