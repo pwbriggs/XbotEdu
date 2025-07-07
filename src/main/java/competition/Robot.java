@@ -45,6 +45,9 @@ public class Robot extends BaseRobot {
 
     @Override
     public void simulationInit() {
+        // teleport the robot to the field, bottom left ish pointing towards the middle
+        getInjectorComponent().poseSubsystem().setCurrentPosition(2, 2);
+        getInjectorComponent().poseSubsystem().setCurrentHeading(0);
         super.simulationInit();
         // Automatically enables the robot; remove this line of code if you want the robot
         // to start in a disabled state (as it would on the field). However, this does save you the 
@@ -59,16 +62,5 @@ public class Robot extends BaseRobot {
         if (simulator != null) {
             simulator.update();
         }
-    }
-
-    private FieldPose getFieldOrigin() {
-        // Modify this to whatever the simulator coordinates are for the "FRC origin" of the field.
-        // From a birds-eye view where your alliance station is at the bottom, this is the bottom-left corner
-        // of the field.
-        return new FieldPose(
-            -2.33*PoseSubsystem.INCHES_IN_A_METER, 
-            -4.58*PoseSubsystem.INCHES_IN_A_METER, 
-            BasePoseSubsystem.FACING_TOWARDS_DRIVERS
-            );
     }
 }

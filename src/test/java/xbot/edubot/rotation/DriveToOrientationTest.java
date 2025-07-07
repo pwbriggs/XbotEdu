@@ -7,7 +7,7 @@ import xbot.edubot.rotation.RotationTestVisualizer.OrientationTest;
 import xbot.edubot.rotation.RotationTestVisualizer.SelectableOrientationTest;
 
 
-public class GoToOrientationTest extends BaseOrientationEngineTest implements SelectableOrientationTest {
+public class DriveToOrientationTest extends BaseOrientationEngineTest implements SelectableOrientationTest {
 
     @Test
     public void testGoToOrientation0to150() {

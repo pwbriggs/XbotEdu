@@ -102,7 +102,7 @@ public class RotationTestVisualizer {
             case ROTATE_TO_ORIENTATION_0_150:
             case ROTATE_TO_ORIENTATION_0_NEG_150:
             case ROTATE_TO_ORIENTATION_NEG_90_150:
-                currentTestEnvironment = new GoToOrientationTest();
+                currentTestEnvironment = new DriveToOrientationTest();
                 break;
             default:
                 break;

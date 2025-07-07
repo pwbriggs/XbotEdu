@@ -3,17 +3,18 @@ package competition.simulation;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.SwerveDriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.MockDigitalInput;
 import xbot.common.controls.actuators.mock_adapters.MockCANMotorController;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 
+@Singleton
 public class EduSimulator {
 
     PoseSubsystem pose;
@@ -67,16 +68,20 @@ public class EduSimulator {
     }
 
     private double getForwardPower() {
-        return (drive.frontLeft.getPower() + drive.frontRight.getPower())  / 2.0;
+        return (MathUtil.clamp(drive.frontLeft.getPower(), -1, 1) + MathUtil.clamp(drive.frontRight.getPower(), -1, 1))  / 2.0;
     }
 
     private double getRotationalPower() {
-        return (drive.frontRight.getPower() - drive.frontLeft.getPower()) / 2.0;
+        return (MathUtil.clamp(drive.frontRight.getPower(), -1, 1) - MathUtil.clamp(drive.frontLeft.getPower(), -1, 1)) / 2.0;
     }
 
     private void addDistanceToEncoders(double distance) {
         ((MockCANMotorController)drive.frontLeft).setPosition(Rotations.of(distance));
         ((MockCANMotorController)drive.frontRight).setPosition(Rotations.of(distance));
+    }
+
+    public void reset() {
+        linearEngine.reset();
     }
 
 

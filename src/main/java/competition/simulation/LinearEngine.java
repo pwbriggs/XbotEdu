@@ -52,4 +52,9 @@ public class LinearEngine {
     public double getDistance() {
         return totalDistance;
     }
+
+    public void reset() {
+        totalDistance = 0;
+        velocity = 0;
+    }
 }
