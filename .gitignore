@@ -171,3 +171,6 @@ build/
 /simgui.json
 /networktables.json
 /networktables.json.bck
+
+# no additional vscode settings changes desired
+.vscode/settings.json
