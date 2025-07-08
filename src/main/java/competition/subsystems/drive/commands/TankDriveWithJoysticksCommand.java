@@ -6,6 +6,9 @@ import xbot.common.command.BaseCommand;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 //This first exercise is mostly completed for you. Take your time to read through it,
 // review all the comments, and then complete it by adding in a bit more code of your own.
 
@@ -34,12 +37,14 @@ public class TankDriveWithJoysticksCommand extends BaseCommand {
         // Get values from the joysticks:
         // Here's how to get how far the left joystick's Y-axis is pushed:
         double leftValue = operatorInterface.gamepad.getLeftVector().getY();
-        // TODO: get how far the RIGHT joystick's Y-axis is pushed as well
+        double rightValue = operatorInterface.gamepad.getRightVector().getY();
+        
+        // log.info("left: {} / right: {}", leftValue, rightValue);
 
         // Pass values into the DriveSubsystem so it can control motors:
         // right now, this just sends the left power to the left part of the drive.
         // You'll need to give it a right power value as well.
-        drive.tankDrive(leftValue, 0);
+        drive.tankDrive(leftValue, rightValue);
     }
 
 }
