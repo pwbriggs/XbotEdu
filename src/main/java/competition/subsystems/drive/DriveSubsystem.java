@@ -19,7 +19,7 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
 
     public final XCANMotorController frontLeft;
     public final XCANMotorController frontRight;
-    double motorMultiplier;
+    double motorMultiplier = 1.0; // default to full power
 
     DoubleProperty dp;
 
