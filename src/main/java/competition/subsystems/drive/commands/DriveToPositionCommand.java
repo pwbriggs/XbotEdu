@@ -32,11 +32,10 @@ public class DriveToPositionCommand extends BaseCommand {
         derivativeConstant = propertyFactory.createPersistentProperty("Derivative constant (velocity)", 1);
     }
 
-    public void setTargetPosition(double position) {
+    public void setTargetPosition(double newTarget) {
         // This method will be called by the test, and will give you a goal distance.
         // You'll need to remember this target position and use it in your calculations.
-        targetPosition = position;
-        previousPosition = position; // Don't spike the velocity
+        targetPosition = newTarget;
     }
 
     @Override
