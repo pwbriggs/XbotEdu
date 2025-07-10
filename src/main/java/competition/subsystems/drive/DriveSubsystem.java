@@ -53,7 +53,7 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
     }
 
     public void setMotorMultiplier(double multiplier) {
-        motorMultiplier = MathUtil.clamp(multiplier, -1.0 1.0);
+        motorMultiplier = MathUtil.clamp(multiplier, -1.0, 1.0);
     }
 
 
