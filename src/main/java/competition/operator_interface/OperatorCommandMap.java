@@ -11,6 +11,7 @@ import competition.subsystems.drive.commands.DriveToPositionCommand;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 import competition.subsystems.drive.commands.TogglePrecisionDriveCommand;
+import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 
 /**
  * Maps operator interface buttons to commands
@@ -45,5 +46,14 @@ public class OperatorCommandMap {
                     simulator.reset();
                 }).andThen(driveToPositionCommand));
         driveToPositionCommand.setTargetPosition(5);
+    }
+
+    @Inject
+    public void setupTurnLeft90DegreesTesting(TurnLeft90DegreesCommand turnLeft90DegreesCommand, EduSimulator simulator) {
+        // let's teleport the robot back to the start each time the button is pressed so repeated testing is easier
+        SmartDashboard.putData("TurnLeft90Degrees",
+                new InstantCommand(() -> {
+                    simulator.reset();
+                }).andThen(turnLeft90DegreesCommand));
     }
 }
