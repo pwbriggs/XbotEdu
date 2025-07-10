@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
+import edu.wpi.first.math.MathUtil;
 import xbot.common.advantage.AKitLogger;
 import xbot.common.advantage.DataFrameRefreshable;
 import xbot.common.controls.actuators.XCANMotorController;
@@ -52,13 +53,7 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
     }
 
     public void setMotorMultiplier(double multiplier) {
-        if (multiplier > 1.0) {
-            motorMultiplier = 1.0;
-        } else if (multiplier < -1.0) {
-            motorMultiplier = -1.0;
-        } else {
-            motorMultiplier = multiplier;
-        }
+        motorMultiplier = MathUtil.clamp(multiplier, -1.0 1.0);
     }
 
 
