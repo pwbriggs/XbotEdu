@@ -27,7 +27,7 @@ public class DriveToPositionCommand extends BaseCommand {
     public DriveToPositionCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, PropertyFactory propertyFactory) {
         this.drive = driveSubsystem;
         this.pose = pose;
-        propertyFactory.setPrefix("DriveToPositionCommand");
+        propertyFactory.setPrefix(this);
         proportionalConstant = propertyFactory.createPersistentProperty("Proportional constant (error)", 1);
         derivativeConstant = propertyFactory.createPersistentProperty("Derivative constant (velocity)", 1);
     }
