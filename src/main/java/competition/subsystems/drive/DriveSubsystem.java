@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
+import edu.wpi.first.math.MathUtil;
 import xbot.common.advantage.AKitLogger;
 import xbot.common.advantage.DataFrameRefreshable;
 import xbot.common.controls.actuators.XCANMotorController;
@@ -19,6 +20,7 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
 
     public final XCANMotorController frontLeft;
     public final XCANMotorController frontRight;
+    double motorMultiplier = 1.0; // default to full power
 
     DoubleProperty dp;
 
@@ -32,17 +34,26 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
         this.frontRight = motorControllerFactory
                 .create(new CANMotorControllerInfo("FrontRight", 2), this.getPrefix(), "FrontRight");
 
+        this.motorMultiplier = 1.0; // init with no precision mode
+
         pf.setPrefix(this);
         dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
     }
 
-    public void tankDrive(double leftPower, double rightPower) {
+    public void tankDrive(double leftInput, double rightInput) {
         // You'll need to take these power values and assign them to all of the motors.
         // As an example, here is some code that has the frontLeft motor to spin
         // according to the value of leftPower:
-        frontLeft.setPower(leftPower);
-        // TODO: Add code to set the right motors to the rightPower value.
+        frontLeft.setPower(leftInput * motorMultiplier);
+        frontRight.setPower(rightInput * motorMultiplier);
+    }
 
+    public double getMotorMultiplier() {
+        return motorMultiplier;
+    }
+
+    public void setMotorMultiplier(double multiplier) {
+        motorMultiplier = MathUtil.clamp(multiplier, -1.0 1.0);
     }
 
 

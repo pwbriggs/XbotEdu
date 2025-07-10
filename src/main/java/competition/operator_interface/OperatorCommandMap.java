@@ -10,6 +10,7 @@ import competition.simulation.EduSimulator;
 import competition.subsystems.drive.commands.DriveToPositionCommand;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
+import competition.subsystems.drive.commands.TogglePrecisionDriveCommand;
 
 /**
  * Maps operator interface buttons to commands
@@ -24,13 +25,15 @@ public class OperatorCommandMap {
     @Inject
     public void setupMyCommands(
             OperatorInterface operatorInterface,
-            SetRobotHeadingCommand resetHeading
-            )
+            SetRobotHeadingCommand resetHeading,
+            TogglePrecisionDriveCommand togglePrecisionDriveCommand
+        )
     {
         resetHeading.setHeadingToApply(90);
         operatorInterface.gamepad.getifAvailable(XboxButton.Start).whileTrue(resetHeading);
 
         // Add new button mappings here!
+        operatorInterface.gamepad.getifAvailable(XboxButton.A).whileTrue(togglePrecisionDriveCommand);
     }
 
 

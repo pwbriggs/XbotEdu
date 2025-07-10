@@ -30,6 +30,12 @@ public class TogglePrecisionDriveCommand extends BaseCommand {
         // the current mode.
         // In all of these cases you'll need to have the mode somehow affect the
         // TankDrive method.
+        double currentMultiplier = drive.getMotorMultiplier();
+        if (currentMultiplier != 1.0) {
+            drive.setMotorMultiplier(1.0);
+        } else {
+            drive.setMotorMultiplier(0.5);
+        }
     }
 
     @Override
