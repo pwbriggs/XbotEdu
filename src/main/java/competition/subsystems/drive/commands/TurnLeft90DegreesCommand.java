@@ -29,6 +29,7 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
         propertyFactory.setPrefix(this);
         proportionalConstant = propertyFactory.createPersistentProperty("Proportional constant (angular error)", 1);
         derivativeConstant = propertyFactory.createPersistentProperty("Derivative constant (angular velocity)", 1);
+        this.addRequirements(drive);
     }
 
     @Override
