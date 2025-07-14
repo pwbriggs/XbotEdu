@@ -63,7 +63,7 @@ public class DriveToOrientationCommand extends BaseCommand {
             error += 360;
         }
 
-        velocity = error - previousError;
+        velocity = previousError - error;
 
         double power = error * proportionalConstant.get() + velocity * derivativeConstant.get();
 
