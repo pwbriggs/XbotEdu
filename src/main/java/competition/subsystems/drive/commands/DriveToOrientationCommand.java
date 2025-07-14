@@ -10,18 +10,21 @@ import competition.subsystems.pose.PoseSubsystem;
 
 public class DriveToOrientationCommand extends BaseCommand {
 
-    DriveSubsystem drive;
-    PoseSubsystem pose;
+    // Subsystems
+    final DriveSubsystem drive;
+    final PoseSubsystem pose;
 
+    // PD controller properties
+    final DoubleProperty proportionalConstant;
+    final DoubleProperty derivativeConstant;
+
+    // Physics computation numbers
     double targetPosition;
 
     double error;
     double previousError;
 
     double velocity;
-
-    DoubleProperty proportionalConstant;
-    DoubleProperty derivativeConstant;
 
     @Inject
     public DriveToOrientationCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, PropertyFactory propertyFactory) {
