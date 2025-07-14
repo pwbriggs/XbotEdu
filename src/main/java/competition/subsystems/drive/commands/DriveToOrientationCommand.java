@@ -14,9 +14,10 @@ public class DriveToOrientationCommand extends BaseCommand {
     PoseSubsystem pose;
 
     double targetPosition;
-    double previousPosition;
 
     double error;
+    double previousError;
+
     double velocity;
 
     DoubleProperty proportionalConstant;
@@ -59,13 +60,7 @@ public class DriveToOrientationCommand extends BaseCommand {
             error += 360;
         }
 
-        velocity = position - previousPosition;
-
-        if (velocity > 180) { // If our velocity reads super high, we probably just turned over -180,
-            velocity -= 360;  // so lets wrap around our reading as well.
-        } else if (velocity < -180) { // And vice-versa
-            velocity += 360;
-        }
+        velocity = error - previousError;
 
         double power = error * proportionalConstant.get() + velocity * derivativeConstant.get();
 
@@ -73,7 +68,7 @@ public class DriveToOrientationCommand extends BaseCommand {
 
         drive.tankDrive(-power, power);
 
-        previousPosition = position;
+        previousError = error;
     }
 
     @Override
