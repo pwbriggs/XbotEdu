@@ -67,7 +67,7 @@ public class DriveToOrientationCommand extends BaseCommand {
 
         double power = error * proportionalConstant.get() + velocity * derivativeConstant.get();
 
-        log.info("Err: {}; Vel: {}; Pos: {}; Tar: {}", error, velocity, position, targetPosition);
+        log.debug("Err: {}; Vel: {}; Pos: {}; Tar: {}", error, velocity, position, targetPosition);
 
         drive.tankDrive(-power, power);
 
