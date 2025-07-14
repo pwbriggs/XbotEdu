@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import competition.simulation.EduSimulator;
+import competition.subsystems.drive.commands.DriveToOrientationCommand;
 import competition.subsystems.drive.commands.DriveToPositionCommand;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 import competition.subsystems.drive.commands.TogglePrecisionDriveCommand;
+import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 
 /**
  * Maps operator interface buttons to commands
@@ -45,5 +47,16 @@ public class OperatorCommandMap {
                     simulator.reset();
                 }).andThen(driveToPositionCommand));
         driveToPositionCommand.setTargetPosition(5);
+    }
+
+    @Inject
+    public void setupTurnLeft90DegreesTesting(TurnLeft90DegreesCommand turnLeft90DegreesCommand, EduSimulator simulator) {
+        SmartDashboard.putData("TurnLeft90Degrees", turnLeft90DegreesCommand);
+    }
+
+    @Inject
+    public void setupDriveToOrientationTesting(DriveToOrientationCommand driveToOrientationCommand, EduSimulator simulator) {
+        SmartDashboard.putData("DriveToOrientation", driveToOrientationCommand);
+        driveToOrientationCommand.setTargetHeading(53);
     }
 }

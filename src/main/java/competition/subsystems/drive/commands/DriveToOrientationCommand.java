@@ -3,42 +3,80 @@ package competition.subsystems.drive.commands;
 import javax.inject.Inject;
 
 import xbot.common.command.BaseCommand;
+import xbot.common.properties.DoubleProperty;
+import xbot.common.properties.PropertyFactory;
 import competition.subsystems.drive.DriveSubsystem;
+import competition.subsystems.pose.PoseSubsystem;
 
 public class DriveToOrientationCommand extends BaseCommand {
 
-    DriveSubsystem drive;
+    // Subsystems
+    final DriveSubsystem drive;
+    final PoseSubsystem pose;
+
+    // PD controller properties
+    final DoubleProperty proportionalConstant;
+    final DoubleProperty derivativeConstant;
+
+    // Physics computation numbers
+    double targetPosition;
+
+    double error;
+    double previousError;
+
+    double velocity;
 
     @Inject
-    public DriveToOrientationCommand(DriveSubsystem driveSubsystem) {
+    public DriveToOrientationCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, PropertyFactory propertyFactory) {
         this.drive = driveSubsystem;
-    }
-
-    public void setTargetHeading(double heading) {
-        // This method will be called by the test, and will give you a goal heading.
-        // You'll need to remember this target position and use it in your calculations.
+        this.pose = pose;
+        propertyFactory.setPrefix(this);
+        proportionalConstant = propertyFactory.createPersistentProperty("Proportional constant (angular error)", 1);
+        derivativeConstant = propertyFactory.createPersistentProperty("Derivative constant (angular velocity)", -10);
+        this.addRequirements(drive);
     }
 
     @Override
     public void initialize() {
-        // If you have some one-time setup, do it here.
+    }
+
+    public void setTargetHeading(double target) {
+        targetPosition = target % 360; // Handle multi-revolution numbers
+        // Wrap around to between -180 and 180, the FoR this class uses.
+        if (targetPosition <= -180) {
+            targetPosition += 360;
+        } else if (targetPosition > 180) {
+            targetPosition -= 360;
+        }
     }
 
     @Override
     public void execute() {
-        // Here you'll need to figure out a technique that:
-        // - Gets the robot to turn to the target orientation
-        // - Gets the robot stop (or at least be moving really really slowly) at the
-        // target position
+        double position = pose.getCurrentHeading().getDegrees();
 
-        // How you do this is up to you. If you get stuck, ask a mentor or student for
-        // some hints!
+        // Assume for now we don't need to turn across -180; we'll update this value in a moment.
+        error = targetPosition - position;
+
+        if (error > 180) { // It wants us to turn too far to the left,
+            error -= 360;  // so let's turn right to the same spot instead
+        } else if (error < -180) { // And vice-versa
+            error += 360;
+        }
+
+        velocity = previousError - error;
+
+        double power = error * proportionalConstant.get() + velocity * derivativeConstant.get();
+
+        log.debug("Err: {}; Vel: {}; Pos: {}; Tar: {}", error, velocity, position, targetPosition);
+
+        drive.tankDrive(-power, power);
+
+        previousError = error;
     }
 
     @Override
     public boolean isFinished() {
-        // Modify this to return true once you have met your goal,
-        // and you're moving fairly slowly (ideally stopped)
-        return false;
+        // log.info("Err: {}; Vel: {}", error, velocity);
+        return ((Math.abs(error) < 0.5) && (Math.abs(velocity) < 0.1));
     }
 }
