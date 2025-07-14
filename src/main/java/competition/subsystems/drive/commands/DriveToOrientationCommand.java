@@ -37,7 +37,7 @@ public class DriveToOrientationCommand extends BaseCommand {
     }
 
     public void setTargetHeading(double target) {
-        targetPosition = target;
+        targetPosition = target % 360; // Handle multi-revolution numbers
         // Wrap around to between -180 and 180, the FoR this class uses.
         if (targetPosition <= -180) {
             targetPosition += 360;
