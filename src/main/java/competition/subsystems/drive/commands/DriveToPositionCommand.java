@@ -3,33 +3,40 @@ package competition.subsystems.drive.commands;
 import javax.inject.Inject;
 
 import xbot.common.command.BaseCommand;
+import xbot.common.math.PIDManager;
+import xbot.common.math.PIDManager.PIDManagerFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
-import edu.wpi.first.units.measure.Velocity;
 
 public class DriveToPositionCommand extends BaseCommand {
 
-    DriveSubsystem drive;
-    PoseSubsystem pose;
+    // Subsystems
+    final DriveSubsystem drive;
+    final PoseSubsystem pose;
+    final PIDManager pid;
 
+    // Physics computation numbers
     double targetPosition;
     double previousPosition;
 
     double error;
     double velocity;
 
-    DoubleProperty proportionalConstant;
-    DoubleProperty derivativeConstant;
-
     @Inject
-    public DriveToPositionCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, PropertyFactory propertyFactory) {
+    public DriveToPositionCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, PIDManagerFactory pidManagerFactory) {
         this.drive = driveSubsystem;
         this.pose = pose;
-        propertyFactory.setPrefix(this);
-        proportionalConstant = propertyFactory.createPersistentProperty("Proportional constant (error)", 1);
-        derivativeConstant = propertyFactory.createPersistentProperty("Derivative constant (velocity)", 1);
+        this.pid = pidManagerFactory.create("DriveToPoint");
+
+        pid.setEnableErrorThreshold(true); // Turn on distance checking
+        pid.setErrorThreshold(0.1);
+        pid.setEnableDerivativeThreshold(true); // Turn on speed checking
+        pid.setDerivativeThreshold(0.1);
+
+        pid.setP(3);
+        pid.setD(100);
     }
 
     public void setTargetPosition(double newTarget) {
@@ -41,38 +48,20 @@ public class DriveToPositionCommand extends BaseCommand {
     @Override
     public void initialize() {
         // If you have some one-time setup, do it here.
+        pid.reset();
     }
 
     @Override
     public void execute() {
-        // Here you'll need to figure out a technique that:
-        // - Gets the robot to move to the target position
-        // - Hint: use pose.getPosition() to find out where you are
-        // - Gets the robot stop (or at least be moving really really slowly) at the
-        // target position
-
-        // How you do this is up to you. If you get stuck, ask a mentor or student for
-        // some hints!
         double position = pose.getPosition();
-        error = targetPosition - position;
-        velocity = position - previousPosition;
-
-        double power = error * proportionalConstant.get() + velocity * derivativeConstant.get();
-
-        log.info("Err: {}; Vel: {}; Pos: {}; Tar: {}", error, velocity, position, targetPosition);
+        double power = pid.calculate(targetPosition, position);
 
         drive.tankDrive(power, power);
-
-        previousPosition = position;
     }
 
     @Override
     public boolean isFinished() {
-        // double position = pose.getPosition();
-        // double error = targetPosition - position;
-        // double velocity = position - previousPosition;
-        // log.info("Err: {}; Vel: {}", error, velocity);
-        return ((Math.abs(error) < 0.005) && (Math.abs(velocity) < 0.0001));
+        return pid.isOnTarget();
     }
 
     public void end() {
