@@ -3,36 +3,35 @@ package competition.subsystems.drive.commands;
 import javax.inject.Inject;
 
 import xbot.common.command.BaseCommand;
-import xbot.common.properties.DoubleProperty;
-import xbot.common.properties.PropertyFactory;
+import xbot.common.math.PIDManager;
+import xbot.common.math.PIDManager.PIDManagerFactory;
+import xbot.common.subsystems.drive.control_logic.HeadingModule;
+import xbot.common.subsystems.drive.control_logic.HeadingModule.HeadingModuleFactory;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 
 public class DriveToOrientationCommand extends BaseCommand {
 
-    // Subsystems
     final DriveSubsystem drive;
     final PoseSubsystem pose;
-
-    // PD controller properties
-    final DoubleProperty proportionalConstant;
-    final DoubleProperty derivativeConstant;
-
-    // Physics computation numbers
+    final HeadingModule headingModule;
+    final PIDManager pid;
+    
     double targetPosition;
 
-    double error;
-    double previousError;
-
-    double velocity;
-
     @Inject
-    public DriveToOrientationCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, PropertyFactory propertyFactory) {
+    public DriveToOrientationCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, HeadingModuleFactory headingModuleFactory, PIDManagerFactory pidManagerFactory) {
         this.drive = driveSubsystem;
         this.pose = pose;
-        propertyFactory.setPrefix(this);
-        proportionalConstant = propertyFactory.createPersistentProperty("Proportional constant (angular error)", 1);
-        derivativeConstant = propertyFactory.createPersistentProperty("Derivative constant (angular velocity)", -10);
+        this.pid = pidManagerFactory.create("DriveToOrientation");
+        pid.setP(1);
+        pid.setD(5);
+        pid.setEnableDerivativeThreshold(true);
+        pid.setEnableErrorThreshold(true);
+        pid.setErrorThreshold(0.01);
+        pid.setDerivativeThreshold(0.01);
+        this.headingModule = headingModuleFactory.create(pid);
+
         this.addRequirements(drive);
     }
 
@@ -52,31 +51,13 @@ public class DriveToOrientationCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        double position = pose.getCurrentHeading().getDegrees();
-
-        // Assume for now we don't need to turn across -180; we'll update this value in a moment.
-        error = targetPosition - position;
-
-        if (error > 180) { // It wants us to turn too far to the left,
-            error -= 360;  // so let's turn right to the same spot instead
-        } else if (error < -180) { // And vice-versa
-            error += 360;
-        }
-
-        velocity = previousError - error;
-
-        double power = error * proportionalConstant.get() + velocity * derivativeConstant.get();
-
-        log.debug("Err: {}; Vel: {}; Pos: {}; Tar: {}", error, velocity, position, targetPosition);
-
+        double power = headingModule.calculateHeadingPower(targetPosition);
+        // log.info(power);
         drive.tankDrive(-power, power);
-
-        previousError = error;
     }
 
     @Override
     public boolean isFinished() {
-        // log.info("Err: {}; Vel: {}", error, velocity);
-        return ((Math.abs(error) < 0.5) && (Math.abs(velocity) < 0.1));
+        return headingModule.isOnTarget();
     }
 }
